@@ -439,7 +439,10 @@ blockExtendedCombined4_nMiniBlocks: 10,
                 //console.log('added');
                         
                 content.unshift(headers);
-                return toCsv(content);
+				var csvString = toCsv(content);
+
+				var compressedCSV = LZString.compressToBase64(csvString);
+                return compressedCSV;                
 
                 function hasProperties(obj, props) {
                     var iProp;
