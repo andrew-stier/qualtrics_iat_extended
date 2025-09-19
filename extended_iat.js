@@ -430,6 +430,7 @@ blockExtendedCombined4_nMiniBlocks: 10,
                             '', //'resp'
                             '', //'err'
                             '', //'rt'
+							'', //parcel
                             piCurrent.d, //'d' overall
                             piCurrent.feedback, //'fb'
                             block3Cond, //'bOrd'
@@ -1500,8 +1501,8 @@ if (globalObj.blockExtendedCombined4_nTrials > 0) {
 				piCurrent.feedback = DScoreObj.FBMsg;
 				piCurrent.d = DScoreObj.DScore;
 
-				piCurrent.d_original = scorer.computeD({parcelValue: ['first']});
-    			piCurrent.d_extended = scorer.computeD({parcelValue: ['extended']});
+				piCurrent.d_original = scorer.computeD({parcelValue: ['first']}).DScore;
+    			piCurrent.d_extended = scorer.computeD({parcelValue: ['extended']}).DScore;
 			},
 
 			interactions: [{
