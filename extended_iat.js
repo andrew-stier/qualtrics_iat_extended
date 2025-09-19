@@ -372,7 +372,7 @@ blockExtendedSwitch2_nMiniBlocks: 7,
             // Transform logs into a string
             // we save as CSV because qualtrics limits to 20K characters and this is more efficient.
             serialize: function (name, logs) {
-                var headers = ['block', 'trial', 'cond', 'comp', 'type', 'cat',  'stim', 'resp', 'err', 'rt', 'd', 'fb', 'bOrd'];
+                var headers = ['block', 'trial', 'cond', 'comp', 'type', 'cat', 'stim', 'resp', 'err', 'rt', 'parcel', 'd', 'fb', 'bOrd','d_first','d_second'];
                 //console.log(logs);
                 var myLogs = [];
                 var iLog;
@@ -406,9 +406,12 @@ blockExtendedSwitch2_nMiniBlocks: 7,
                         log.responseHandle, //'resp'
                         log.data.score, //'err'
                         log.latency, //'rt'
+						log.data.parcel || '', //'parcel' 
                         '', //'d'
                         '', //'fb'
-                        '' //'bOrd'
+                        '', //'bOrd'
+						'', //d first
+						'', //d second
                         ]; });
                 //console.log('mapped');
                 //Add a line with the feedback, score and block-order condition
@@ -423,9 +426,11 @@ blockExtendedSwitch2_nMiniBlocks: 7,
                             '', //'resp'
                             '', //'err'
                             '', //'rt'
-                            piCurrent.d, //'d'
+                            piCurrent.d, //'d' overall
                             piCurrent.feedback, //'fb'
-                            block3Cond //'bOrd'
+                            block3Cond, //'bOrd'
+							piCurrent.d_original, // d first half
+    						piCurrent.d_extended, // d second half
                         ]);
                 //console.log('added');
                         
