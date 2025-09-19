@@ -1274,85 +1274,6 @@ blockExtendedSwitch2_nMiniBlocks: 7,
 			}
         }
 
-		//////// in this trial the score of the participant is computed//////////////////
-
-		trialSequence.push({
-			data: {blockStart:true},
-			layout : [{media:{word:''}}],
-			customize : function(element, global){
-				var DScoreObj = scorer.computeD();
-				piCurrent.feedback = DScoreObj.FBMsg;
-				piCurrent.d = DScoreObj.DScore;
-			},
-
-			interactions: [{
-				conditions: [{type:'begin'}],
-				actions: [{type: 'endTrial'}]
-			}]
-		});
-        
-        //if showDebriefing==True, we will show the feedback to the user
-        if(showDebriefing){
-            //////////////////////////////
-            //Add pre-Page before the debriefing is shown
-            trialSequence.push({
-                inherit : 'instructions',
-                data: {blockStart:true},
-                layout : [{media:{word:''}}],
-                stimuli : [
-                    {
-                        inherit : 'Default',
-                        media : {word : (isTouch ? piCurrent.preDebriefingTouchText : piCurrent.preDebriefingText)}
-                    }
-                ]
-            });
-            
-            /////////////////////////////
-            //add debriefing trial, the feedback will be shown with text above and under ther result.
-            trialSequence.push({
-                inherit:'instructions',
-                data: {blockStart:true},
-               
-                //the feedback massege will be shown to the user at the center of the screen
-                stimuli: [
-                    
-                {
-					inherit : 'Default',
-                    media : {word : (piCurrent.debriefingTextTop)},
-                    location:{left:2,top:15,right:2},
-                },
-                {
-                    inherit: 'Default',
-                    media :{word: ('<%=current.feedback%>') },
-                    location:{left:2,top:30,right:2}
-                },
-                {
-					inherit : 'Default',
-                    media : {word : (isTouch ? piCurrent.debriefingTextBottomTouch:piCurrent.debriefingTextBottom)},
-                    location:{left:2,top:45,right:2}
-                }
-             
-                
-                
-            ],
-				   
-            });	
-		}
-			
-		//////////////////////////////
-		//Add final trial
-		trialSequence.push({
-			inherit : 'instructions',
-			data: {blockStart:true},
-			layout : [{media:{word:''}}],
-			stimuli : [
-				{
-					inherit : 'Default',
-					media : {word : (isTouch ? piCurrent.finalTouchText : piCurrent.finalText)}
-				}
-			]
-
-    });
 
 // Extended blocks 8-11 - CORRECTED KEY MAPPING VERSION
 if (globalObj.blockExtendedSwitch1_nTrials || 28) {
@@ -1459,7 +1380,7 @@ for (var iExt3 = 1; iExt3 <= blockParamsCombined.nMiniBlocks; iExt3++) {
 iBlock++;
 
 // Block 11: Final switch (28 trials)
-if (globalObj.blockExtendedSwitch2_nTrials || 28) {
+if ((globalObj.blockExtendedSwitch2_nTrials || 28) >0) {
     // Final category switch
     var tempCat = blockParamsCats.left1;
     blockParamsCats.left1 = blockParamsCats.right1;
@@ -1494,7 +1415,91 @@ if (globalObj.blockExtendedSwitch2_nTrials || 28) {
         }));
     }
 }
-    
+
+		
+		//////// in this trial the score of the participant is computed//////////////////
+
+		trialSequence.push({
+			data: {blockStart:true},
+			layout : [{media:{word:''}}],
+			customize : function(element, global){
+				var DScoreObj = scorer.computeD();
+				piCurrent.feedback = DScoreObj.FBMsg;
+				piCurrent.d = DScoreObj.DScore;
+
+				piCurrent.d_original = scorer.computeD({parcelValue: ['first']});
+    			piCurrent.d_extended = scorer.computeD({parcelValue: ['extended']});
+			},
+
+			interactions: [{
+				conditions: [{type:'begin'}],
+				actions: [{type: 'endTrial'}]
+			}]
+		});
+        
+        //if showDebriefing==True, we will show the feedback to the user
+        if(showDebriefing){
+            //////////////////////////////
+            //Add pre-Page before the debriefing is shown
+            trialSequence.push({
+                inherit : 'instructions',
+                data: {blockStart:true},
+                layout : [{media:{word:''}}],
+                stimuli : [
+                    {
+                        inherit : 'Default',
+                        media : {word : (isTouch ? piCurrent.preDebriefingTouchText : piCurrent.preDebriefingText)}
+                    }
+                ]
+            });
+            
+            /////////////////////////////
+            //add debriefing trial, the feedback will be shown with text above and under ther result.
+            trialSequence.push({
+                inherit:'instructions',
+                data: {blockStart:true},
+               
+                //the feedback massege will be shown to the user at the center of the screen
+                stimuli: [
+                    
+                {
+					inherit : 'Default',
+                    media : {word : (piCurrent.debriefingTextTop)},
+                    location:{left:2,top:15,right:2},
+                },
+                {
+                    inherit: 'Default',
+                    media :{word: ('<%=current.feedback%>') },
+                    location:{left:2,top:30,right:2}
+                },
+                {
+					inherit : 'Default',
+                    media : {word : (isTouch ? piCurrent.debriefingTextBottomTouch:piCurrent.debriefingTextBottom)},
+                    location:{left:2,top:45,right:2}
+                }
+             
+                
+                
+            ],
+				   
+            });	
+		}
+			
+		//////////////////////////////
+		//Add final trial
+		trialSequence.push({
+			inherit : 'instructions',
+			data: {blockStart:true},
+			layout : [{media:{word:''}}],
+			stimuli : [
+				{
+					inherit : 'Default',
+					media : {word : (isTouch ? piCurrent.finalTouchText : piCurrent.finalText)}
+				}
+			]
+
+    });
+		
 		//Add the trials sequence to the API.
 		API.addSequence(trialSequence);
 
@@ -1511,7 +1516,7 @@ if (globalObj.blockExtendedSwitch2_nTrials || 28) {
 			//condition 2
 			cond2VarValues: [INCOMPATIBLE],
 			parcelVar : "parcel", 
-			parcelValue : ['first'],
+			parcelValue : ['first','extended'],
 			fastRT : 150, //Below this reaction time, the latency is considered extremely fast.
 			maxFastTrialsRate : 0.1, //Above this % of extremely fast responses within a condition, the participant is considered too fast.
 			minRT : 400, //Below this latency
