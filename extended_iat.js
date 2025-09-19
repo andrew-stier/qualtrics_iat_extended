@@ -1354,96 +1354,146 @@ blockExtendedSwitch2_nMiniBlocks: 7,
 
     });
 
-
-    // EXTENDED BLOCKS (8-11) - Add these 4 blocks after the normal 7
-iBlock = 8; // Continue block numbering
-
-// Block 8: Switch categories again (28 trials)
-if (blockParamsCombined.nTrials > 0) {
-    // Switch the categories back
+// Extended blocks 8-11 - CORRECTED KEY MAPPING VERSION
+if (globalObj.blockExtendedSwitch1_nTrials || 28) {
+    // Block 8: Switch categories back to original positions
+    // After block 7, categories were switched in block 5
+    // Switch them back to match blocks 3-4 configuration
+    
     var tempCat = blockParamsCats.left1;
     blockParamsCats.left1 = blockParamsCats.right1; 
     blockParamsCats.right1 = tempCat;
-    var tempTrial = leftCatTrial;
-    leftCatTrial = rightCatTrial;
-    rightCatTrial = tempTrial;
     
+    // CRITICAL FIX: Update trial names to match category positions
+    if (blockParamsCats.left1.name === 'Black people') {
+        leftCatTrial = 'cat1left';
+        rightCatTrial = 'cat2right';  
+    } else {
+        leftCatTrial = 'cat2left';
+        rightCatTrial = 'cat1right';
+    }
+    
+    blockParamsCats.nTrials = globalObj.blockExtendedSwitch1_nTrials || 28;
+    blockParamsCats.nMiniBlocks = 7;
     blockParamsCats.blockNum = iBlock;
-    blockParamsCats.nBlocks = 11; // Update total blocks
+    blockParamsCats.nBlocks = nBlocks;
+    blockCondition = blockParamsCats.left1.name + ',' + blockParamsCats.right1.name;
+    
     trialSequence.push(getInstTrial(blockParamsCats));
     blockLayout = getLayout(blockParamsCats);
+    nTrialsInMini = blockParamsCats.nTrials/blockParamsCats.nMiniBlocks;
     
-    for (var i = 0; i < globalObj.blockSwitch_nMiniBlocks; i++) {
+    for (var iExt1 = 1; iExt1 <= blockParamsCats.nMiniBlocks; iExt1++) {
         trialSequence.push(getMiniMixer2({
-            nTrialsInMini: globalObj.blockSwitch_nTrials/globalObj.blockSwitch_nMiniBlocks,
-            currentCond: blockParamsCats.left1.name + ',' + blockParamsCats.right1.name,
-            rightTrial: rightCatTrial, leftTrial: leftCatTrial, blockNum: iBlock,
+            nTrialsInMini: nTrialsInMini, 
+            currentCond: blockCondition,
+            rightTrial: rightCatTrial, 
+            leftTrial: leftCatTrial, 
+            blockNum: iBlock, 
             blockLayout: blockLayout
         }));
     }
     iBlock++;
 }
 
-// Block 9: Combined (20 trials) 
+// Block 9: Combined test (20 trials)
 blockParamsCombined.left2 = blockParamsCats.left1;
 blockParamsCombined.right2 = blockParamsCats.right1;
 blockCondition = blockParamsCombined.left2.name + '/' + blockParamsCombined.left1.name + ',' + blockParamsCombined.right2.name + '/' + blockParamsCombined.right1.name;
+
+// Determine compatibility based on current category-attribute pairing
+isCompatible = INCOMPATIBLE;
+if ((blockParamsCombined.right1.name == att1.name && blockParamsCombined.right2.name == cat1.name) || 
+    (blockParamsCombined.right1.name == att2.name && blockParamsCombined.right2.name == cat2.name)) {
+    isCompatible = COMPATIBLE;
+}
+
+blockParamsCombined.nTrials = globalObj.blockExtendedCombined1_nTrials || 20;
+blockParamsCombined.nMiniBlocks = 5;
 blockParamsCombined.blockNum = iBlock;
-blockParamsCombined.nBlocks = 11;
-blockParamsCombined.nTrials = globalObj.blockFirstCombined_nTrials;
-blockParamsCombined.nMiniBlocks = globalObj.blockFirstCombined_nMiniBlocks;
+blockParamsCombined.nBlocks = nBlocks;
+blockParamsCombined.nCats = 4;
+
+trialSequence.push(getInstTrial(blockParamsCombined));
 blockLayout = getLayout(blockParamsCombined);
 nTrialsInMini = blockParamsCombined.nTrials/blockParamsCombined.nMiniBlocks;
 
-trialSequence.push(getInstTrial(blockParamsCombined));
-for (var i = 0; i < blockParamsCombined.nMiniBlocks; i++) {
+for (var iExt2 = 1; iExt2 <= blockParamsCombined.nMiniBlocks; iExt2++) {
     trialSequence.push(getMiniMixer4({
-        nTrialsInMini: nTrialsInMini, currentCond: blockCondition, cong: isCompatible,
-        rightTrial1: rightAttTrial, leftTrial1: leftAttTrial,
-        rightTrial2: rightCatTrial, leftTrial2: leftCatTrial,
-        blockNum: iBlock, blockLayout: blockLayout, parcel: 'extended'
+        nTrialsInMini: nTrialsInMini, 
+        currentCond: blockCondition, 
+        cong: isCompatible,
+        rightTrial1: rightAttTrial, 
+        leftTrial1: leftAttTrial,
+        rightTrial2: rightCatTrial, 
+        leftTrial2: leftCatTrial,
+        blockNum: iBlock, 
+        blockLayout: blockLayout, 
+        parcel: 'extended'
     }));
 }
 iBlock++;
 
-// Block 10: Combined critical (40 trials)
-blockParamsCombined.blockNum = iBlock; 
-blockParamsCombined.nTrials = globalObj.blockSecondCombined_nTrials;
-blockParamsCombined.nMiniBlocks = globalObj.blockSecondCombined_nMiniBlocks;
-nTrialsInMini = blockParamsCombined.nTrials/blockParamsCombined.nMiniBlocks;
+// Block 10: Combined critical (40 trials) - same configuration as block 9
+blockParamsCombined.nTrials = globalObj.blockExtendedCombined2_nTrials || 40;
+blockParamsCombined.nMiniBlocks = 10;
+blockParamsCombined.blockNum = iBlock;
 
 trialSequence.push(getInstTrial(blockParamsCombined));
-for (var i = 0; i < blockParamsCombined.nMiniBlocks; i++) {
+nTrialsInMini = blockParamsCombined.nTrials/blockParamsCombined.nMiniBlocks;
+
+for (var iExt3 = 1; iExt3 <= blockParamsCombined.nMiniBlocks; iExt3++) {
     trialSequence.push(getMiniMixer4({
-        nTrialsInMini: nTrialsInMini, currentCond: blockCondition, cong: isCompatible,
-        rightTrial1: rightAttTrial, leftTrial1: leftAttTrial,
-        rightTrial2: rightCatTrial, leftTrial2: leftCatTrial,
-        blockNum: iBlock, blockLayout: blockLayout, parcel: 'extended'
+        nTrialsInMini: nTrialsInMini, 
+        currentCond: blockCondition, 
+        cong: isCompatible,
+        rightTrial1: rightAttTrial, 
+        leftTrial1: leftAttTrial,
+        rightTrial2: rightCatTrial, 
+        leftTrial2: leftCatTrial,
+        blockNum: iBlock, 
+        blockLayout: blockLayout, 
+        parcel: 'extended'
     }));
 }
 iBlock++;
 
 // Block 11: Final switch (28 trials)
-tempCat = blockParamsCats.left1;
-blockParamsCats.left1 = blockParamsCats.right1;
-blockParamsCats.right1 = tempCat;
-tempTrial = leftCatTrial;
-leftCatTrial = rightCatTrial;
-rightCatTrial = tempTrial;
+if (globalObj.blockExtendedSwitch2_nTrials || 28) {
+    // Final category switch
+    var tempCat = blockParamsCats.left1;
+    blockParamsCats.left1 = blockParamsCats.right1;
+    blockParamsCats.right1 = tempCat;
+    
+    // CRITICAL FIX: Update trial names to match new category positions
+    if (blockParamsCats.left1.name === 'Black people') {
+        leftCatTrial = 'cat1left';
+        rightCatTrial = 'cat2right';  
+    } else {
+        leftCatTrial = 'cat2left';
+        rightCatTrial = 'cat1right';
+    }
 
-blockParamsCats.blockNum = iBlock;
-trialSequence.push(getInstTrial(blockParamsCats));
-blockLayout = getLayout(blockParamsCats);
+    blockParamsCats.nTrials = globalObj.blockExtendedSwitch2_nTrials || 28;
+    blockParamsCats.nMiniBlocks = 7;
+    blockParamsCats.blockNum = iBlock;
+    blockCondition = blockParamsCats.left1.name + ',' + blockParamsCats.right1.name;
 
-for (var i = 0; i < globalObj.blockSwitch_nMiniBlocks; i++) {
-    trialSequence.push(getMiniMixer2({
-        nTrialsInMini: globalObj.blockSwitch_nTrials/globalObj.blockSwitch_nMiniBlocks,
-        currentCond: blockParamsCats.left1.name + ',' + blockParamsCats.right1.name,
-        rightTrial: rightCatTrial, leftTrial: leftCatTrial, blockNum: iBlock,
-        blockLayout: blockLayout
-    }));
+    trialSequence.push(getInstTrial(blockParamsCats));
+    blockLayout = getLayout(blockParamsCats);
+    nTrialsInMini = blockParamsCats.nTrials/blockParamsCats.nMiniBlocks;
+
+    for (var iExt4 = 1; iExt4 <= blockParamsCats.nMiniBlocks; iExt4++) {
+        trialSequence.push(getMiniMixer2({
+            nTrialsInMini: nTrialsInMini, 
+            currentCond: blockCondition,
+            rightTrial: rightCatTrial, 
+            leftTrial: leftCatTrial, 
+            blockNum: iBlock, 
+            blockLayout: blockLayout
+        }));
+    }
 }
-
     
 		//Add the trials sequence to the API.
 		API.addSequence(trialSequence);
