@@ -130,6 +130,14 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 			blockSecondCombined_nMiniBlocks : 10, 
 			blockSwitch_nTrials : 28,
 			blockSwitch_nMiniBlocks : 7,
+			blockExtendedSwitch1_nTrials: 28,        // Block 8: Switch categories again
+blockExtendedSwitch1_nMiniBlocks: 7,     
+blockExtendedCombined1_nTrials: 20,      // Block 9: Combined (20 trials)  
+blockExtendedCombined1_nMiniBlocks: 5,
+blockExtendedCombined2_nTrials: 40,      // Block 10: Combined critical (40 trials)
+blockExtendedCombined2_nMiniBlocks: 10,
+blockExtendedSwitch2_nTrials: 28,        // Block 11: Switch categories final
+blockExtendedSwitch2_nMiniBlocks: 7,
 
 			//Should we randomize which attribute is on the right, and which on the left?
 			randomAttSide : false, // Accepts 'true' and 'false'. If false, then attribute2 on the right.
@@ -978,11 +986,22 @@ define(['pipAPI','pipScorer','underscore'], function(APIConstructor, Scorer, _) 
 		var globalObj = piCurrent;
 
         //Count the number of blocks in this task
-        var nBlocks = (globalObj.blockAttributes_nTrials<1 ? 0 : 1) + 
-        (globalObj.blockCategories_nTrials<1 ? 0 : 1) + 
-        (globalObj.blockFirstCombined_nTrials<1 ? 0 : 2) + 
-        (globalObj.blockSecondCombined_nTrials<1 ? 0 : 2) + 
-        (globalObj.blockSwitch_nTrials<1 ? 0 : 1);
+        // var nBlocks = (globalObj.blockAttributes_nTrials<1 ? 0 : 1) + 
+        // (globalObj.blockCategories_nTrials<1 ? 0 : 1) + 
+        // (globalObj.blockFirstCombined_nTrials<1 ? 0 : 2) + 
+        // (globalObj.blockSecondCombined_nTrials<1 ? 0 : 2) + 
+        // (globalObj.blockSwitch_nTrials<1 ? 0 : 1);
+
+		var nBlocks = (globalObj.blockAttributes_nTrials<1 ? 0 : 1) + 
+(globalObj.blockCategories_nTrials<1 ? 0 : 1) + 
+(globalObj.blockFirstCombined_nTrials<1 ? 0 : 2) + 
+(globalObj.blockSecondCombined_nTrials<1 ? 0 : 2) + 
+(globalObj.blockSwitch_nTrials<1 ? 0 : 1) +
+// EXTENDED BLOCKS - Add 4 more blocks dynamically
+(globalObj.blockExtendedSwitch1_nTrials<1 ? 0 : 1) +
+(globalObj.blockExtendedCombined1_nTrials<1 ? 0 : 1) + 
+(globalObj.blockExtendedCombined2_nTrials<1 ? 0 : 1) +
+(globalObj.blockExtendedSwitch2_nTrials<1 ? 0 : 1);
 
 		//These parameters are used to create trials.
 		var blockParamsAtts = {
