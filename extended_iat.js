@@ -1277,6 +1277,7 @@ blockExtendedSwitch2_nMiniBlocks: 7,
 				rightTrial2 : rightCatTrial, leftTrial2 : leftCatTrial,
 				blockNum : iBlock, blockLayout : blockLayout, parcel:'first'}));
 			}
+			iBlock++;
         }
 
 
@@ -1303,7 +1304,9 @@ if (globalObj.blockExtendedSwitch1_nTrials || 28) {
     blockParamsCats.nMiniBlocks = 7;
     blockParamsCats.blockNum = iBlock;
     blockParamsCats.nBlocks = nBlocks;
+	blockParamsCats.instTemplate = isTouch ? globalObj.instSwitchCategoriesTouch : globalObj.instSwitchCategories;
     blockCondition = blockParamsCats.left1.name + ',' + blockParamsCats.right1.name;
+	
     
     trialSequence.push(getInstTrial(blockParamsCats));
     blockLayout = getLayout(blockParamsCats);
@@ -1339,6 +1342,8 @@ blockParamsCombined.nMiniBlocks = 5;
 blockParamsCombined.blockNum = iBlock;
 blockParamsCombined.nBlocks = nBlocks;
 blockParamsCombined.nCats = 4;
+blockParamsCombined.instTemplate = isTouch ? globalObj.instFirstCombinedTouch : globalObj.instFirstCombined;
+
 
 trialSequence.push(getInstTrial(blockParamsCombined));
 blockLayout = getLayout(blockParamsCombined);
@@ -1364,6 +1369,7 @@ iBlock++;
 blockParamsCombined.nTrials = globalObj.blockExtendedCombined2_nTrials || 40;
 blockParamsCombined.nMiniBlocks = 10;
 blockParamsCombined.blockNum = iBlock;
+blockParamsCombined.instTemplate = isTouch ? globalObj.instSecondCombinedTouch : globalObj.instSecondCombined;
 
 trialSequence.push(getInstTrial(blockParamsCombined));
 nTrialsInMini = blockParamsCombined.nTrials/blockParamsCombined.nMiniBlocks;
@@ -1403,6 +1409,7 @@ if ((globalObj.blockExtendedSwitch2_nTrials || 28) >0) {
     blockParamsCats.nTrials = globalObj.blockExtendedSwitch2_nTrials || 28;
     blockParamsCats.nMiniBlocks = 7;
     blockParamsCats.blockNum = iBlock;
+	blockParamsCats.instTemplate = isTouch ? globalObj.instSwitchCategoriesTouch : globalObj.instSwitchCategories;
     blockCondition = blockParamsCats.left1.name + ',' + blockParamsCats.right1.name;
 
     trialSequence.push(getInstTrial(blockParamsCats));
@@ -1419,6 +1426,7 @@ if ((globalObj.blockExtendedSwitch2_nTrials || 28) >0) {
             blockLayout: blockLayout
         }));
     }
+	iBlock++;
 }
 
 		
