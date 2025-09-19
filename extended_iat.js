@@ -1429,7 +1429,69 @@ if ((globalObj.blockExtendedSwitch2_nTrials || 28) >0) {
 	iBlock++;
 }
 
-		
+
+		// Block 12: Combined test in new configuration (20 trials)
+blockParamsCombined.left2 = blockParamsCats.left1;
+blockParamsCombined.right2 = blockParamsCats.right1;
+blockCondition = blockParamsCombined.left2.name + '/' + blockParamsCombined.left1.name + ',' + blockParamsCombined.right2.name + '/' + blockParamsCombined.right1.name;
+
+// Recalculate compatibility for new configuration
+isCompatible = INCOMPATIBLE;
+if ((blockParamsCombined.right1.name == att1.name && blockParamsCombined.right2.name == cat1.name) || 
+    (blockParamsCombined.right1.name == att2.name && blockParamsCombined.right2.name == cat2.name)) {
+    isCompatible = COMPATIBLE;
+}
+
+blockParamsCombined.nTrials = 20;
+blockParamsCombined.nMiniBlocks = 5;
+blockParamsCombined.blockNum = iBlock;
+blockParamsCombined.nBlocks = 13; // Update total blocks
+blockParamsCombined.nCats = 4;
+blockParamsCombined.instTemplate = isTouch ? globalObj.instFirstCombinedTouch : globalObj.instFirstCombined;
+
+trialSequence.push(getInstTrial(blockParamsCombined));
+blockLayout = getLayout(blockParamsCombined);
+nTrialsInMini = blockParamsCombined.nTrials/blockParamsCombined.nMiniBlocks;
+
+for (var iExt5 = 1; iExt5 <= blockParamsCombined.nMiniBlocks; iExt5++) {
+    trialSequence.push(getMiniMixer4({
+        nTrialsInMini: nTrialsInMini, 
+        currentCond: blockCondition, 
+        cong: isCompatible,
+        rightTrial1: rightAttTrial, 
+        leftTrial1: leftAttTrial,
+        rightTrial2: rightCatTrial, 
+        leftTrial2: leftCatTrial,
+        blockNum: iBlock, 
+        blockLayout: blockLayout, 
+        parcel: 'extended'
+    }));
+}
+iBlock++;
+
+// Block 13: Combined critical in new configuration (40 trials)
+blockParamsCombined.nTrials = 40;
+blockParamsCombined.nMiniBlocks = 10;
+blockParamsCombined.blockNum = iBlock;
+blockParamsCombined.instTemplate = isTouch ? globalObj.instSecondCombinedTouch : globalObj.instSecondCombined;
+
+trialSequence.push(getInstTrial(blockParamsCombined));
+nTrialsInMini = blockParamsCombined.nTrials/blockParamsCombined.nMiniBlocks;
+
+for (var iExt6 = 1; iExt6 <= blockParamsCombined.nMiniBlocks; iExt6++) {
+    trialSequence.push(getMiniMixer4({
+        nTrialsInMini: nTrialsInMini, 
+        currentCond: blockCondition, 
+        cong: isCompatible,
+        rightTrial1: rightAttTrial, 
+        leftTrial1: leftAttTrial,
+        rightTrial2: rightCatTrial, 
+        leftTrial2: leftCatTrial,
+        blockNum: iBlock, 
+        blockLayout: blockLayout, 
+        parcel: 'extended'
+    }));
+}
 		//////// in this trial the score of the participant is computed//////////////////
 
 		trialSequence.push({
