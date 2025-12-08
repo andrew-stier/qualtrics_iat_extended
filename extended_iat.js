@@ -1302,7 +1302,7 @@ if (globalObj.blockExtendedSwitch1_nTrials || 28) {
     blockParamsCats.right1 = tempCat;
     
     // CRITICAL FIX: Update trial names to match category positions
-    if (blockParamsCats.left1.name === 'Black people') {
+    if (blockParamsCats.left1.name === cat1.name) {
         leftCatTrial = 'cat1left';
         rightCatTrial = 'cat2right';  
     } else {
@@ -1408,7 +1408,7 @@ if ((globalObj.blockExtendedSwitch2_nTrials || 28) >0) {
     blockParamsCats.right1 = tempCat;
     
     // CRITICAL FIX: Update trial names to match new category positions
-    if (blockParamsCats.left1.name === 'Black people') {
+    if (blockParamsCats.left1.name === cat1.name) {
         leftCatTrial = 'cat1left';
         rightCatTrial = 'cat2right';  
     } else {
